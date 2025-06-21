@@ -7,7 +7,7 @@ OBJ_NAME = img2x16
 
 #This is the target
 all: $(OBJS)
-	g++ $(OBJS) -w -O2 -o ./bin/$(OBJ_NAME)
+	g++ $(OBJS) -w -O2 -std=c++17 -o $(OBJ_NAME)
 
 clean:
-	rm -f ./bin/$(OBJ_NAME)
+	rm -f $(OBJ_NAME)
