@@ -14,12 +14,17 @@ const std::string ver = "Image to X16 (VERA) palette: 0.3\n";
 //Default LabColor pallete to be pre-calculated once
 extern std::vector<LabColor> actPaletteLabColor_lut;
 
+std::vector<Color> greyscale = {//Added fake transparenc as index 0
+    //{ 1,2,3, 255},
+    { 0,0,0, 255}, { 17,17,17, 255}, { 34,34,34, 255}, { 51,51,51, 255}, { 68,68,68, 255}, { 85,85,85, 255}, { 102,102,102, 255}, { 119,119,119, 255}, { 136,136,136, 255}, { 153,153,153, 255}, { 170,170,170, 255}, { 187,187,187, 255}, { 204,204,204, 255}, { 221,221,221, 255}, { 238,238,238, 255}, { 255,255,255, 255}
+};
+
 //Default X16 VERA palette Color vector (r, g, b, [a] )
  std::vector<Color> x16vpal = { //{r, g, b, a}
 
-{ 0, 0, 0, 255}, { 255,255,255, 255}, { 136,0,0, 255}, { 170,255,238, 255}, { 204,68,204, 255}, { 0,204,85, 255}, { 0,0,170, 255}, { 238,238,119, 255}, { 221,136,85, 255}, { 102,68,0, 255}, { 255,119,119, 255}, { 51,51,51, 255}, { 119,119,119, 255}, { 170,255,102, 255}, { 0,136,255, 255}, { 187,187,187, 255}, { 0,0,0, 255},
-{ 17,17,17, 255}, { 34,34,34, 255}, { 51,51,51, 255}, { 68,68,68, 255}, { 85,85,85, 255}, { 102,102,102, 255}, { 119,119,119, 255}, { 136,136,136, 255}, { 153,153,153, 255}, { 170,170,170, 255}, { 187,187,187, 255}, { 204,204,204, 255}, { 221,221,221, 255}, { 238,238,238, 255}, { 255,255,255, 255}, { 34,17,17, 255},
-{ 68,51,51, 255}, { 102,68,68, 255}, { 136,102,102, 255}, { 170,136,136, 255}, { 204,153,153, 255}, { 255,187,187, 255}, { 34,17,17, 255}, { 68,34,34, 255}, { 102,51,51, 255}, { 136,68,68, 255}, { 170,85,85, 255}, { 204,102,102, 255}, { 255,119,119, 255}, { 34,0,0, 255}, { 68,17,17, 255}, { 102,17,17, 255},
+{ 0, 0, 0, 255}, { 255,255,255, 255}, { 136,0,0, 255}, { 170,255,238, 255}, { 204,68,204, 255}, { 0,204,85, 255}, { 0,0,170, 255}, { 238,238,119, 255}, { 221,136,85, 255}, { 102,68,0, 255}, { 255,119,119, 255}, { 51,51,51, 255}, { 119,119,119, 255}, { 170,255,102, 255}, { 0,136,255, 255}, { 187,187,187, 255},
+{ 0,0,0, 255}, { 17,17,17, 255}, { 34,34,34, 255}, { 51,51,51, 255}, { 68,68,68, 255}, { 85,85,85, 255}, { 102,102,102, 255}, { 119,119,119, 255}, { 136,136,136, 255}, { 153,153,153, 255}, { 170,170,170, 255}, { 187,187,187, 255}, { 204,204,204, 255}, { 221,221,221, 255}, { 238,238,238, 255}, { 255,255,255, 255},
+{ 34,17,17, 255}, { 68,51,51, 255}, { 102,68,68, 255}, { 136,102,102, 255}, { 170,136,136, 255}, { 204,153,153, 255}, { 255,187,187, 255}, { 34,17,17, 255}, { 68,34,34, 255}, { 102,51,51, 255}, { 136,68,68, 255}, { 170,85,85, 255}, { 204,102,102, 255}, { 255,119,119, 255}, { 34,0,0, 255}, { 68,17,17, 255}, { 102,17,17, 255},
 { 136,34,34, 255}, { 170,34,34, 255}, { 204,51,51, 255}, { 255,51,51, 255}, { 34,0,0, 255}, { 68,0,0, 255}, { 102,0,0, 255}, { 136,0,0, 255}, { 170,0,0, 255}, { 204,0,0, 255}, { 255,0,0, 255}, { 34,34,17, 255}, { 68,68,51, 255}, { 102,102,68, 255}, { 136,136,102, 255}, { 170,170,136, 255},
 { 204,204,153, 255}, { 255,238,187, 255}, { 34,17,17, 255}, { 68,51,34, 255}, { 102,85,51, 255}, { 136,119,68, 255}, { 170,153,85, 255}, { 204,187,102, 255}, { 255,221,119, 255}, { 34,17,0, 255}, { 68,51,17, 255}, { 102,85,17, 255}, { 136,102,34, 255}, { 170,136,34, 255}, { 204,170,51, 255}, { 255,204,51, 255},
 { 34,17,0, 255}, { 68,51,0, 255}, { 102,68,0, 255}, { 136,102,0, 255}, { 170,136,0, 255}, { 204,153,0, 255}, { 255,187,0, 255}, { 17,34,17, 255}, { 51,68,51, 255}, { 85,102,68, 255}, { 119,136,102, 255}, { 153,170,136, 255}, { 187,204,153, 255}, { 221,255,187, 255}, { 17,34,17, 255}, { 51,68,34, 255},
@@ -43,6 +48,7 @@ static bool perceived = false;
 static bool nooutputbin = false;
 static bool externalpal = false;
 static std::vector<Color>* activePal;
+static bool bw = false;
 
 int main(int argc, char* argv[]) {
 
@@ -63,10 +69,16 @@ int main(int argc, char* argv[]) {
         ("d,dither", "Optional - Dither the image", cxxopts::value(dither))
         ("p,perceived", "Optional - Use perceived color formula", cxxopts::value(perceived))
         ("n,noout", "Optional - Do not output a VERA binary image file", cxxopts::value(nooutputbin))
+        ("z,bpp4", "Optional - 4-bpp, use palette offset 1 [Experimental]", cxxopts::value(bw))
         ("o,outname", "Optional - output filename, default is infilename.bin", cxxopts::value(outbinaryname));
 
     auto result = cmdoptions.parse(argc, argv);
      
+    if (result.count("z") > 0) {
+        activePal->resize(0);
+        *activePal = greyscale;
+    }
+
     if (result.count("i")==0) {
         usage(&cmdoptions);
         delete activePal;
@@ -155,7 +167,7 @@ int main(int argc, char* argv[]) {
     adaptPixels(*activePal, img, width, height, thismethod, rqstChannels);
     if(!nooutputbin){
         std::cout << "Writing X16 (raw) file:\t" << outbinaryname << " \t";
-        if (outputByteData(*activePal, img, outbinaryname.c_str(), width, height, thismethod, rqstChannels)) {
+        if (outputByteData(*activePal, img, outbinaryname.c_str(), width, height, thismethod, rqstChannels, bw)) {
             std::cerr << "Error: Could not create file: " << outbinaryname << std::endl;
             usage(&cmdoptions);
         } else {
@@ -224,7 +236,7 @@ void adaptPixels(const std::vector<Color> &activePalette, unsigned char* imgpixe
     }
 }
 
-int outputByteData(const std::vector<Color> &activePalette, unsigned char* pixels, const char* fileName, int width, int height, imageconversiontype method, int channels) {
+int outputByteData(const std::vector<Color> &activePalette, unsigned char* pixels, const char* fileName, int width, int height, imageconversiontype method, int channels, bool _bw) {
 
     std::string outbinaryname = fileName;
     std::ofstream outfile(outbinaryname, std::ios::binary);
@@ -234,6 +246,8 @@ int outputByteData(const std::vector<Color> &activePalette, unsigned char* pixel
         return -1;
     }
 
+	int pixel_counter=0;
+
     for (int it = 0; it < (width * height * channels); it += channels) {
         unsigned char x16idx = 0;
         Color testpixel = { 0,0,0,255 };
@@ -242,6 +256,7 @@ int outputByteData(const std::vector<Color> &activePalette, unsigned char* pixel
         testpixel.r = *(pixels + it);
         testpixel.g = *(pixels + it + 1);
         testpixel.b = *(pixels + it + 2);
+		testpixel.a = *(pixels + it + 3);
         if (method == DITHERPERCEIEVED || method == NODITHERPERCIEVED) {
             x16idx = indexfindClosestColorPerceived(testpixel, activePalette) & 0xFF;
         }
@@ -249,9 +264,32 @@ int outputByteData(const std::vector<Color> &activePalette, unsigned char* pixel
             x16idx = indexfindClosestPaletteColor(testpixel, activePalette) & 0xFF;
         }
 
-        outfile.write((char*)&x16idx, 1);
+		pixel_counter++;
+		
+        if (_bw) {   //Grab two pixels per byte
+            unsigned char temp=0;
+            x16idx <<= 4;
+			x16idx &= 0xF0;
+			it +=channels;
+            testpixel.r = *(pixels + it);
+            testpixel.g = *(pixels + it + 1);
+            testpixel.b = *(pixels + it + 2);
+            if (method == DITHERPERCEIEVED || method == NODITHERPERCIEVED)
+                temp = indexfindClosestColorPerceived(testpixel, activePalette) & 0x0F;
+            else
+                temp = indexfindClosestPaletteColor(testpixel, activePalette) & 0x0F;
+            x16idx |= temp;
+            outfile.write((char*)&x16idx, 1);
+			pixel_counter++;
+        }
+        else {
+            outfile.write((char*)&x16idx, 1);
+        }
+        
     }
 
+	std::cout<<std::endl<<width<<" "<<height<<" "<<channels<<std::endl<<"Pixel Count: "<<pixel_counter<<std::endl;
+	
     return 0;
 
 }

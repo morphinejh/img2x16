@@ -36,7 +36,7 @@
 */
 
 //Function Declaration
-int outputByteData(const std::vector<Color>&, unsigned char*, const char*, int, int, imageconversiontype, int);
+int outputByteData(const std::vector<Color>&, unsigned char*, const char*, int, int, imageconversiontype, int, bool);
 int loadpalette(std::vector<Color>*, std::ifstream*);
 void usage(cxxopts::Options*);
 void configureflags();
