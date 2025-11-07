@@ -9,7 +9,7 @@
 
 #include "img2x16.hpp"
 
-const std::string ver = "Image to X16 (VERA) palette: 0.3\n";
+const std::string ver = "Image to X16 (VERA) palette: 0.4\n";
 
 //Default LabColor pallete to be pre-calculated once
 extern std::vector<LabColor> actPaletteLabColor_lut;
