@@ -33,6 +33,8 @@ Usage:
   -d, --dither           Optional - Dither the image
   -p, --perceived        Optional - Use perceived color formula
   -n, --noout            Optional - Do not output a VERA binary image file
+  -z, --bpp4             Optional - 4-bpp, use palette offset 1
+                         [Experimental]
   -o, --outname arg      Optional - output filename, default is 
                          infilename.bin
 
