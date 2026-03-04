@@ -1,7 +1,7 @@
 # img2x16
 `img2x16` is a program to convert image files to VERA binary streams for the Commander X16.
 
-Unlike a lot of existing tools, `img2x16` is designed to take a given image, and adapt it to a given color palette for the [VERA](https://github.com/X16Community/x16-docs/blob/master/X16%20Reference%20-%2009%20-%20VERA%20Programmer's%20Reference.md) used in the [Commander X16](https://www.commanderx16.com). It curently only supports 8bpp color depth (i.e 16-bit palette entries).
+Unlike a lot of existing tools, `img2x16` is designed to take a given image, and adapt it to a given color palette for the [VERA](https://github.com/X16Community/x16-docs/blob/master/X16%20Reference%20-%2009%20-%20VERA%20Programmer's%20Reference.md) used in the [Commander X16](https://www.commanderx16.com). It curently supports 8bpp and 4bpp color depths.
 
 * Image preview file generation is optionally supported (`-s`)
 * Dither is also optionally supported (`-d`)
