@@ -9,22 +9,17 @@
 
 #include "img2x16.hpp"
 
-const std::string ver = "Image to X16 (VERA) palette: 0.4\n";
+const std::string ver = "Image to X16 (VERA) palette: 0.5\n";
 
-//Default LabColor pallete to be pre-calculated once
+//Default LabColor palette to be pre-calculated once
 extern std::vector<LabColor> actPaletteLabColor_lut;
-
-std::vector<Color> greyscale = {//Added fake transparenc as index 0
-    //{ 1,2,3, 255},
-    { 0,0,0, 255}, { 17,17,17, 255}, { 34,34,34, 255}, { 51,51,51, 255}, { 68,68,68, 255}, { 85,85,85, 255}, { 102,102,102, 255}, { 119,119,119, 255}, { 136,136,136, 255}, { 153,153,153, 255}, { 170,170,170, 255}, { 187,187,187, 255}, { 204,204,204, 255}, { 221,221,221, 255}, { 238,238,238, 255}, { 255,255,255, 255}
-};
 
 //Default X16 VERA palette Color vector (r, g, b, [a] )
  std::vector<Color> x16vpal = { //{r, g, b, a}
 
-{ 0, 0, 0, 255}, { 255,255,255, 255}, { 136,0,0, 255}, { 170,255,238, 255}, { 204,68,204, 255}, { 0,204,85, 255}, { 0,0,170, 255}, { 238,238,119, 255}, { 221,136,85, 255}, { 102,68,0, 255}, { 255,119,119, 255}, { 51,51,51, 255}, { 119,119,119, 255}, { 170,255,102, 255}, { 0,136,255, 255}, { 187,187,187, 255},
-{ 0,0,0, 255}, { 17,17,17, 255}, { 34,34,34, 255}, { 51,51,51, 255}, { 68,68,68, 255}, { 85,85,85, 255}, { 102,102,102, 255}, { 119,119,119, 255}, { 136,136,136, 255}, { 153,153,153, 255}, { 170,170,170, 255}, { 187,187,187, 255}, { 204,204,204, 255}, { 221,221,221, 255}, { 238,238,238, 255}, { 255,255,255, 255},
-{ 34,17,17, 255}, { 68,51,51, 255}, { 102,68,68, 255}, { 136,102,102, 255}, { 170,136,136, 255}, { 204,153,153, 255}, { 255,187,187, 255}, { 34,17,17, 255}, { 68,34,34, 255}, { 102,51,51, 255}, { 136,68,68, 255}, { 170,85,85, 255}, { 204,102,102, 255}, { 255,119,119, 255}, { 34,0,0, 255}, { 68,17,17, 255}, { 102,17,17, 255},
+{   0, 0, 0, 255}, { 255,255,255, 255}, { 136, 0 , 0, 255}, { 170,255,238, 255}, { 204,68,204, 255}, {  0,204,85, 255}, {   0,   0, 170, 255}, { 238,238,119, 255}, { 221, 136,  85, 255}, { 102,  68,   0, 255}, { 255, 119, 119, 255}, {  51,  51,  51, 255}, { 119, 119, 119, 255}, { 170, 255, 102, 255}, {   0, 136, 255, 255}, { 187,187,187, 255},
+{   0, 0, 0, 255}, {  17, 17, 17, 255}, { 34, 34, 34, 255}, {  51, 51, 51, 255}, { 68, 68, 68, 255}, { 85, 85,85, 255}, { 102, 102, 102, 255}, { 119,119,119, 255}, { 136, 136, 136, 255}, { 153, 153, 153, 255}, { 170, 170, 170, 255}, { 187, 187, 187, 255}, { 204, 204, 204, 255}, { 221, 221, 221, 255}, { 238, 238, 238, 255}, { 255,255,255, 255},
+{  34,17,17, 255}, { 68,51,51, 255}, { 102,68,68, 255}, { 136,102,102, 255}, { 170,136,136, 255}, { 204,153,153, 255}, { 255,187,187, 255}, { 34,17,17, 255}, { 68,34,34, 255}, { 102,51,51, 255}, { 136,68,68, 255}, { 170,85,85, 255}, { 204,102,102, 255}, { 255,119,119, 255}, { 34,0,0, 255}, { 68,17,17, 255}, { 102,17,17, 255},
 { 136,34,34, 255}, { 170,34,34, 255}, { 204,51,51, 255}, { 255,51,51, 255}, { 34,0,0, 255}, { 68,0,0, 255}, { 102,0,0, 255}, { 136,0,0, 255}, { 170,0,0, 255}, { 204,0,0, 255}, { 255,0,0, 255}, { 34,34,17, 255}, { 68,68,51, 255}, { 102,102,68, 255}, { 136,136,102, 255}, { 170,170,136, 255},
 { 204,204,153, 255}, { 255,238,187, 255}, { 34,17,17, 255}, { 68,51,34, 255}, { 102,85,51, 255}, { 136,119,68, 255}, { 170,153,85, 255}, { 204,187,102, 255}, { 255,221,119, 255}, { 34,17,0, 255}, { 68,51,17, 255}, { 102,85,17, 255}, { 136,102,34, 255}, { 170,136,34, 255}, { 204,170,51, 255}, { 255,204,51, 255},
 { 34,17,0, 255}, { 68,51,0, 255}, { 102,68,0, 255}, { 136,102,0, 255}, { 170,136,0, 255}, { 204,153,0, 255}, { 255,187,0, 255}, { 17,34,17, 255}, { 51,68,51, 255}, { 85,102,68, 255}, { 119,136,102, 255}, { 153,170,136, 255}, { 187,204,153, 255}, { 221,255,187, 255}, { 17,34,17, 255}, { 51,68,34, 255},
@@ -48,38 +43,42 @@ static bool perceived = false;
 static bool nooutputbin = false;
 static bool externalpal = false;
 static std::vector<Color>* activePal;
-static bool bw = false;
+static bool indexed = false;
 
 int main(int argc, char* argv[]) {
 
     int width, height, channels;
     int rqstChannels = 4;               //Always request 4, if no Alpha channel, it is 100% opaque
     unsigned char* img = nullptr;
-    
     activePal = new std::vector<Color>;
     *activePal = x16vpal;
+	int palette16_index=-1;
+    cxxopts::ParseResult result;
 
     std::string infilename, palfilename, outbinaryname, outputpngname;
 
     cxxopts::Options cmdoptions(argv[0], ver.c_str());
     cmdoptions.add_options()
-        ("i,inimage", "Required - Input image files", cxxopts::value(infilename))
-        ("v,verapalette", "Optional - Use alternate VERA palette file", cxxopts::value(palfilename))
-        ("s,save", "Optional - Save PNG image alongside binary image file", cxxopts::value(fsave))
-        ("d,dither", "Optional - Dither the image", cxxopts::value(dither))
-        ("p,perceived", "Optional - Use perceived color formula", cxxopts::value(perceived))
-        ("n,noout", "Optional - Do not output a VERA binary image file", cxxopts::value(nooutputbin))
-        ("z,bpp4", "Optional - 4-bpp, use palette offset 1 [Experimental]", cxxopts::value(bw))
-        ("o,outname", "Optional - output filename, default is infilename.bin", cxxopts::value(outbinaryname));
-
-    auto result = cmdoptions.parse(argc, argv);
-     
-    if (result.count("z") > 0) {
-        activePal->resize(0);
-        *activePal = greyscale;
+        ("i", "Required - Input image files (i.e. -i\"inputimage.png\")", cxxopts::value(infilename))
+        ("v", "Optional - Use alternate VERA palette file (i.e. -v\"bw.pal\")", cxxopts::value(palfilename))
+        ("s", "Optional - Save preview PNG image alongside binary image file", cxxopts::value(fsave))
+        ("d", "Optional - Dither the image", cxxopts::value(dither))
+        ("p", "Optional - Use perceived color formula", cxxopts::value(perceived))
+        ("n", "Optional - Do NOt output a VERA binary image file", cxxopts::value(nooutputbin))
+        ("x", "Optional - 4-bpp, use palette offset number required (i.e. -x1 for the 2nd index [zero based])", cxxopts::value(palette16_index))
+        ("o", "Optional - output filename, default is infilename.bin (i.e. -o\"image.bin\"", cxxopts::value(outbinaryname));
+    
+    try {
+        result = cmdoptions.parse(argc, argv);
+    }
+    catch (const cxxopts::exceptions::exception& e){
+        std::cout << e.what() << std::endl << std::endl << std::endl;
+        usage(&cmdoptions);
+        return EXIT_FAILURE;
     }
 
     if (result.count("i")==0) {
+        std::cout << "No input image given." << std::endl << std::endl;
         usage(&cmdoptions);
         delete activePal;
         return EXIT_FAILURE;
@@ -97,12 +96,44 @@ int main(int argc, char* argv[]) {
         }
         else {
             if (loadpalette(activePal, &palfile)) {
-                std::cerr << "Pallette file is the incorrect format." << std::endl;
+                std::cerr << "Palette file is the incorrect format." << std::endl;
                 delete activePal;
                 return EXIT_FAILURE;
             }
             //File is closed in loadpalette
             externalpal = true;
+        }
+    }
+
+
+    if (result.count("x") > 0) {
+        
+        int palette_index_count = 16;
+        int palette_length = 16;
+
+        if (externalpal = true) {
+            palette_index_count = (int)(activePal->size() >> 4);
+        }
+
+        if ((activePal->size() % 16)) {
+
+            palette_length = activePal->size() - (palette16_index * 16);
+            if (palette_length > 16) {
+                palette_length = 16;
+            }
+        }
+        //We need to make sure the pallate has the propeor size
+        if (palette16_index <= palette_index_count && palette16_index >= 0) {
+            std::vector<Color>* tempPal = new std::vector<Color>(activePal->begin() + (palette16_index * 16), activePal->begin() + (palette16_index * 16) + palette_length);
+            delete activePal;
+            activePal = tempPal;
+
+            indexed = true;
+        }
+        else {
+            std::cout << "Inavlid palette offset given of "<< palette16_index << " and only " << palette_length << " available." << std::endl;
+            usage(&cmdoptions);
+            return EXIT_FAILURE;
         }
     }
 
@@ -167,7 +198,7 @@ int main(int argc, char* argv[]) {
     adaptPixels(*activePal, img, width, height, thismethod, rqstChannels);
     if(!nooutputbin){
         std::cout << "Writing X16 (raw) file:\t" << outbinaryname << " \t";
-        if (outputByteData(*activePal, img, outbinaryname.c_str(), width, height, thismethod, rqstChannels, bw)) {
+        if (outputByteData(*activePal, img, outbinaryname.c_str(), width, height, thismethod, rqstChannels, indexed)) {
             std::cerr << "Error: Could not create file: " << outbinaryname << std::endl;
             usage(&cmdoptions);
         } else {
@@ -236,7 +267,7 @@ void adaptPixels(const std::vector<Color> &activePalette, unsigned char* imgpixe
     }
 }
 
-int outputByteData(const std::vector<Color> &activePalette, unsigned char* pixels, const char* fileName, int width, int height, imageconversiontype method, int channels, bool _bw) {
+int outputByteData(const std::vector<Color> &activePalette, unsigned char* pixels, const char* fileName, int width, int height, imageconversiontype method, int channels, bool _indexed) {
 
     std::string outbinaryname = fileName;
     std::ofstream outfile(outbinaryname, std::ios::binary);
@@ -266,7 +297,7 @@ int outputByteData(const std::vector<Color> &activePalette, unsigned char* pixel
 
 		pixel_counter++;
 		
-        if (_bw) {   //Grab two pixels per byte
+        if (_indexed) {   //Grab two pixels per byte
             unsigned char temp=0;
             x16idx <<= 4;
 			x16idx &= 0xF0;

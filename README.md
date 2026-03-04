@@ -24,19 +24,18 @@ There are no checks or resizing for image size. This should be done before conve
 
 ```
 Usage:
-  img2x16 [OPTION...]
+  [OPTION...]
 
-  -i, --inimage arg      Required - Input image files
-  -v, --verapalette arg  Optional - Use alternate VERA palette file
-  -s, --save             Optional - Save PNG image alongside binary image 
-                         file
-  -d, --dither           Optional - Dither the image
-  -p, --perceived        Optional - Use perceived color formula
-  -n, --noout            Optional - Do not output a VERA binary image file
-  -z, --bpp4             Optional - 4-bpp, use palette offset 1
-                         [Experimental]
-  -o, --outname arg      Optional - output filename, default is 
-                         infilename.bin
+  -i arg  Required - Input image files (i.e. -i"inputimage.png")
+  -v arg  Optional - Use alternate VERA palette file (i.e. -v"bw.pal")
+  -s      Optional - Save preview PNG image alongside binary image file
+  -d      Optional - Dither the image
+  -p      Optional - Use perceived color formula
+  -n      Optional - Do NOt output a VERA binary image file
+  -x arg  Optional - 4-bpp, use palette offset number required (i.e. -x1
+          for the 2nd index [zero based])
+  -o arg  Optional - output filename, default is infilename.bin (i.e.
+          -o"image.bin"
 
         **** Output Files are overwritten without prompting ****
 ```
@@ -44,18 +43,18 @@ Usage:
 This example will take the file `theimage.png` and covert it to a binary image file using the defeault VERA palette. 
 
 #### Simple command line usage
-`img2x16 -itheimage.png`
+`img2x16 -i"theimage.png"`
 
 This would output a file called `theimage.bin`. The image would use the default VERA color palette, no dither, and the closest RGB calculation for color matching.
 
-#### BASIC Load example of the binary file
+#### BASIC Load example of the binary file (256 color)
 ```
 10 SCREEN $80
 20 BVLOAD"THEIMAGE.BIN",8,0,0
 ```
 
 #### Multi-options example command line usage
-`img2x16 -iphoto.bmp -vbw.pal -sdp -ooutput.img`
+`img2x16 -i"photo.bmp" -v"bw.pal" -sdp -o"output.img"`
 
 This would create a binary file called `output.img` that used the palette file `bw.pal`, and a preview image called `photo_.png`. The conversion would use dithering and percieved color for its color matching.
 
@@ -67,8 +66,15 @@ Writing X16 (raw) file: output.img      in 2.49538 seconds.
 Writing image file:     sdtest_.png     in 0.205782 seconds.
 ```
 
+#### 4-bit per pixel
+`img2x16 -i"photo.png" -s -x1 -o"output.bin"`
+
+This would create a binary file called `output.bin` that used the default VERA palette. It would create a 4bpp binary file that was created using the 2nd index of the pallete (greyscale). It will also save a preview PNG file with it.
+
+
 ## Suggestions
 * Don't dither images with transparencies
+* Perceived color mode usually ends up oversaturated. The default setting is usually best.
 
 ## Bulding
 If you would like to complile from source just use your favorite C++ 17 compiler. `Makefile` provided for a POSIX system example and a `Make.bat` file example which should work with Visual Studio under the *Developer Command Prompt*.
