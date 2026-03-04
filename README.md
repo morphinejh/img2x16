@@ -15,7 +15,7 @@ If no color palatte file is given, the program will use the default VERA color p
 ## About
 This project started in an effort to quickly adapt multiple image files to a single color palette. Many of the current tools either create their own palette for each image, or require software and dependencies that make it harder to use across platforms.
 
-This tools is quick, command line driven, and makes it easy to integrate in scripts and build tools. It also requires no dependencies or libraries outside of the normal build chain (>= C++ 17). Binaries are provided for Windows, Ubuntu (*should work on most Debian distros*), and Raspberry PI OS (arm7L and aarch64).
+This tools is quick, command line driven, and makes it easy to integrate in scripts and build tools. It also requires no dependencies or libraries outside of the normal build chain (>= C++ 17). Binaries are provided for Windows.
 
 ## Usage
 Valid input image format are: BMP, PNG, GIF, JPG
@@ -24,7 +24,7 @@ There are no checks or resizing for image size. This should be done before conve
 
 ```
 Usage:
-  [OPTION...]
+  img2x16 [OPTION...]
 
   -i arg  Required - Input image files (i.e. -i"inputimage.png")
   -v arg  Optional - Use alternate VERA palette file (i.e. -v"bw.pal")
